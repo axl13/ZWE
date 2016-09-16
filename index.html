@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html >
+  <head>
+    <meta charset="UTF-8">
+    <title>Zwift Workouts Editor</title>
+    
+    
+    
+    <link rel='stylesheet prefetch' href='https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.0.4/material.css'>
+
+    
+    
+    
+    
+  </head>
+
+  <body>
+
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css">
+
+<header class="mdl-layout__header">
+  <div class="mdl-layout__header-row">
+    <!-- Title -->
+    <span class="mdl-layout-title">Zwift Workout Editor</span>
+  </div>
+</header>
+<div id="todoapp" class="mdl-grid">
+  <div class="mdl-cell mdl-cell--12-col">
+    <form>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <label class="mdl-textfield__label" for="workout_name">Workout name</label>
+        <input class="mdl-textfield__input" type="text" id="workout_name" v-model="workout_name" />
+      </div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <label class="mdl-textfield__label" for="author">Author</label>
+        <input class="mdl-textfield__input" type="text" id="author" v-model="author"></input>
+      </div>
+      <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+        <div>Duration: {{ total_duration }} min</div>
+        <div>Score: {{ stress_score }} </div>
+      </div>
+    </form>
+  </div>
+  <div class="mdl-tabs mdl-js-tabs mdl-js-ripple-effect">
+    <div class="mdl-tabs__tab-bar">
+      <a href="#tab1" class="mdl-tabs__tab">Steady</a>
+      <a href="#tab2" class="mdl-tabs__tab">Interval</a>
+    </div>
+    <div class="mdl-tabs__panel is-active" id="tab1">
+      <form v-on="submit: addTask">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="message" v-model="message"/>
+          <label class="mdl-textfield__label" for="message">Description</label>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="duration" v-model="duration" number>
+          <label class="mdl-textfield__label" for="duration">Minutes...</label>
+          <span class="mdl-textfield__error">Number required!</span>
+        </div>
+
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="Power" v-model="Power" number>
+
+          <label class="mdl-textfield__label" for="Power">%FTP...</label>
+          <span class="mdl-textfield__error">Number required!</span>
+        </div>
+        <button><i class="material-icons mdl-js-button" type="submit" id="add1">add</i></button>
+        <div class="mdl-tooltip" for="add1">
+          Add Step
+        </div>
+      </form>
+    </div>
+
+    <div class="mdl-tabs__panel" id="tab2">
+      <form v-on="submit: addInterval">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" id="intDescr" v-model="intDescr" />
+          <label class="mdl-textfield__label" for="intDescr">Description</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="intRepeats" v-model="intRepeats" number>
+          <label class="mdl-textfield__label" for="intRepeats">Repeats...</label>
+          <span class="mdl-textfield__error">Number required!</span>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="intOnDuration" v-model="intOnDuration" number>
+          <label class="mdl-textfield__label" for="intOnDuration">On Minutes...</label>
+          <span class="mdl-textfield__error">Number required!</span>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="intOnPower" v-model="intOnPower" number>
+          <label class="mdl-textfield__label" for="intOnPower">On %FTP</label>
+          <span class="mdl-textfield__error">Number required!</span>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="number" pattern="-?[0-9]*(\.[0-9]+)?" id="intOffDuration" v-model="intOffDuration" number>
+          <label class="mdl-textfield__label" for="intOffDuration">Off Minutes...</label>
+          <span class="mdl-textfield__error">Number required!</span>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+          <input class="mdl-textfield__input" type="text" pattern="-?[0-9]*(\.[0-9]+)?" id="intOffPower" v-model="intOffPower" number>
+          <label class="mdl-textfield__label" for="intOffPower">Off %FTP</label>
+          <span class="mdl-textfield__error">Number required!</span>
+        </div>
+
+        <button><i class="material-icons mdl-js-button" type="submit" id="add2">add</i></button>
+        <div class="mdl-tooltip" for="add2">
+          Add Interval
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="mdl-cell mdl-cell--12-col" id="todoapp">
+    <ul class="collection" id="sortable">
+      <li v-repeat="task: tasks" class="collection-item" data-id="{{ task.id }}">
+        <div>
+          <span v-if="task.type =='steady'">
+          {{ task.message }} for {{ task.duration }} min at {{ task.power }} %FTP
+          </span>
+          <span v-if="task.type =='interval'">
+          {{ task.intDescr }} Repeat {{ task.intRepeats }} times with {{ task.intOnDuration }} min at {{ task.intOnPower }} %FTP, then recover for {{ task.intOffDuration }} min at {{ task.intOffPower }} %FTP
+          </span><i v-on="click: removeTodo($index)" class="material-icons secondary-content">delete</i>
+        </div>
+      </li>
+    </ul>
+  </div>
+<!--
+  <div class="mdl-cell mdl-cell--6-col">
+    <pre>     
+       {{ $data | json }}
+    </pre>
+  </div>
+-->
+
+  <button v-on="click: saveData" class="mdl-button mdl-js-button mdl-button--raised">Save Data</button>
+</div>
+<hr>
+<a href="https://www.paypal.me/axl13/2eur"> <img src="https://az743702.vo.msecnd.net/cdn/btn5.png" border="0" name="submit" width=150 alt="PayPal - The safer, easier way to pay online!">
+</a>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/0.12.14/vue.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/material-design-lite/1.0.4/material.js'></script>
+<script src='http://rubaxa.github.io/Sortable/Sortable.js'></script>
+
+        <script src="js/index.js"></script>
+
+    
+    
+    
+  </body>
+</html>
